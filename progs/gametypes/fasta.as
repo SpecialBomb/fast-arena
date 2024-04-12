@@ -21,6 +21,10 @@ uint faTimelimit1v1;
 
 Cvar g_fa_timelimit1v1( "g_fa_timelimit1v1", "60", 0 );
 
+// cvar for setting the amount of sets per game. Default is a set of 3 games.
+uint faSetlimit;
+Cvar g_fa_setlimit( "g_fa_setlimit", "3", 0);
+
 Cvar g_noclass_inventory( "g_noclass_inventory", "gb mg rg gl rl pg lg eb cells shells grens rockets plasma lasers bullets", 0 );
 Cvar g_class_strong_ammo( "g_class_strong_ammo", "1 75 20 20 40 125 180 15", 0 ); // GB MG RG GL RL PG LG EB
 
@@ -1078,6 +1082,7 @@ void GT_InitGametype()
                  + "set g_maxtimeouts \"1\" // -1 = unlimited\n"
                  + "\n// gametype settings\n"
 				 + "set g_fa_timelimit1v1 \"60\"\n"
+                 + "set g_fa_setlimit \"3\" // Amount of sets per game before mapchange.\n"
                  + "\n// classes settings\n"
                  + "set g_noclass_inventory \"gb mg rg gl rl pg lg eb cells shells grens rockets plasma lasers bolts bullets\"\n"
                  + "set g_class_strong_ammo \"1 30 10 10 30 45 75 5\" // GB MG RG GL RL PG LG EB\n"
@@ -1089,6 +1094,7 @@ void GT_InitGametype()
     }
 
 	faTimelimit1v1 = g_fa_timelimit1v1.integer;
+    faSetlimit = g_fa_setlimit.integer;
 
     gametype.spawnableItemsMask = 0;
     gametype.respawnableItemsMask = 0;
