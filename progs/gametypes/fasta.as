@@ -1072,7 +1072,7 @@ void GT_InitGametype()
                  + "set g_allow_selfdamage \"0\"\n"
                  + "set g_allow_teamdamage \"0\"\n"
                  + "set g_allow_stun \"0\"\n"
-                 + "set g_teams_maxplayers \"8\"\n"
+                 + "set g_teams_maxplayers \"3\"\n"
                  + "set g_teams_allow_uneven \"0\"\n"
                  + "set g_countdown_time \"3\"\n"
                  + "set g_maxtimeouts \"1\" // -1 = unlimited\n"
