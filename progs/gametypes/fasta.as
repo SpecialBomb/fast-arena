@@ -43,6 +43,7 @@ class cFARound
 {
     int state;
     int numRounds;
+    int numSets;
     uint roundStateStartTime;
     uint roundStateEndTime;
     int countDown;
@@ -58,6 +59,7 @@ class cFARound
     {
         this.state = FA_ROUNDSTATE_NONE;
         this.numRounds = 0;
+        this.numSets = 0;
         this.roundStateStartTime = 0;
         this.countDown = 0;
 		this.minuteLeft = 0;
@@ -364,6 +366,13 @@ class cFARound
 			else // draw round
             {
                 G_CenterPrintMsg( null, "Draw Round!" );
+            }
+
+            // see if scorelimit was reached and add one to numSets.
+            if ( match.scoreLimitHit() )
+            {
+                this.numSets = this.numSets + 1;
+                G_PrintMsg( 0, "numSets is " + this.numSets + "\n" );
             }
         }
         break;
@@ -932,8 +941,26 @@ void GT_PlayerRespawn( Entity @ent, int old_team, int new_team )
 // Thinking function. Called each frame
 void GT_ThinkRules()
 {
-    if ( match.scoreLimitHit() || match.timeLimitHit() || match.suddenDeathFinished() )
-        match.launchState( match.getState() + 1 );
+    // Here, we need to make an exception during MATCH_STATE_PLAYTIME
+    // so that we can use external logic for sets to move to the
+    // MATCH_STATE_POSTMATCH and end the game after n sets.
+    //
+    // We need to keep this logic or else you could never move from
+    // the previous states.
+    
+    int currentMatchState = match.getState();
+    if ( ( currentMatchState != MATCH_STATE_PLAYTIME ) && ( match.scoreLimitHit() || match.timeLimitHit() || match.suddenDeathFinished() ) )
+    {
+        match.launchState( currentMatchState + 1 );
+    }
+    else if ( ( faRound.numSets >= faSetLimit ) && match.scoreLimitHit() )
+    {
+        match.launchState( currentMatchState + 1 );
+    }
+    else if ( match.scoreLimitHit() )
+    {
+        match.launchState( MATCH_STATE_WARMUP );
+    }
 
 	GENERIC_Think();
 
