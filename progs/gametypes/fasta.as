@@ -43,7 +43,7 @@ class cFARound
 {
     int state;
     int numRounds;
-    int numSets;
+    uint numSets;
     uint roundStateStartTime;
     uint roundStateEndTime;
     int countDown;
@@ -953,7 +953,7 @@ void GT_ThinkRules()
     {
         match.launchState( currentMatchState + 1 );
     }
-    else if ( ( faRound.numSets >= faSetlimit ) && match.scoreLimitHit() )
+    else if ( ( faSetlimit != 0 ) && ( faRound.numSets >= faSetlimit ) && match.scoreLimitHit() )
     {
         match.launchState( currentMatchState + 1 );
     }
