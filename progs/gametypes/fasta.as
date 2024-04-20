@@ -372,7 +372,7 @@ class cFARound
             if ( match.scoreLimitHit() )
             {
                 this.numSets = this.numSets + 1;
-                G_PrintMsg( 0, "numSets is " + this.numSets + "\n" );
+                G_PrintMsg( null, "numSets is " + this.numSets + "\n" );
             }
         }
         break;
@@ -953,7 +953,7 @@ void GT_ThinkRules()
     {
         match.launchState( currentMatchState + 1 );
     }
-    else if ( ( faRound.numSets >= faSetLimit ) && match.scoreLimitHit() )
+    else if ( ( faRound.numSets >= faSetlimit ) && match.scoreLimitHit() )
     {
         match.launchState( currentMatchState + 1 );
     }
