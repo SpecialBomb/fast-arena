@@ -368,9 +368,9 @@ class cFARound
                 G_CenterPrintMsg( null, "Draw Round!" );
             }
 
-            // see if scorelimit was reached and add one to numSets.
             if ( match.scoreLimitHit() )
             {
+                // see if scorelimit was reached and add one to numSets.
                 this.numSets = this.numSets + 1;
                 G_PrintMsg( null, "numSets is " + this.numSets + "\n" );
             }
@@ -643,6 +643,33 @@ cFARound faRound;
 
 void FA_SetUpWarmup()
 {
+    // upon completing set, teams and scores should be cleared and all players sent to spectator.
+
+    Entity @ent;
+    Team @team;
+    int i;
+    
+    for ( i = TEAM_PLAYERS; i < GS_MAX_TEAMS; i++ )
+        {
+            @team = @G_GetTeam( i );
+            team.stats.clear();
+            
+            // send all players to spec and respawn as ghosts
+            for ( int j = 0; @team.ent( j ) != null; j++ )
+                {
+                    @ent = @team.ent( j );
+                    ent.client.stats.clear(); // clear player scores & stats
+                    ent.client.team = TEAM_SPECTATOR; // send player to spec
+                    ent.client.respawn( true );
+                }
+        }
+    
+    // clear bonuses
+    for ( i = 0; i < maxClients; i++ )
+        faBonusScores[i] = 0;
+    
+    faRound.clearLMSCounts();
+    
     GENERIC_SetUpWarmup();
 
     // set spawnsystem type to instant while players join
